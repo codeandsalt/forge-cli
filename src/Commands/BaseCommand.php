@@ -30,16 +30,14 @@ abstract class BaseCommand extends Command
     protected $optionMap = [];
 
     /**
+     * @param \Sven\FileConfig\Store     $config
      * @param \Themsaid\Forge\Forge|null $forge
-     *
-     * @throws \Symfony\Component\Console\Exception\LogicException
-     * @throws \LogicException
      */
-    public function __construct(Forge $forge = null)
+    public function __construct(Store $config, Forge $forge = null)
     {
         parent::__construct();
 
-        $this->config = $this->getFileConfig();
+        $this->config = $config;
 
         if ($this instanceof NeedsForge) {
             $this->forge = $forge ?: new Forge($this->config->get('key'));

@@ -38,6 +38,7 @@ class Show extends BaseCommand implements NeedsForge
             '<info>Status:</info>          '.$site->status,
             '<info>Project type:</info>    '.$site->projectType,
             '<info>Created:</info>         '.$site->createdAt,
+            '<info>Deployment URL:</info>  '.$site->deploymentUrl,
         ]);
 
         return 0;

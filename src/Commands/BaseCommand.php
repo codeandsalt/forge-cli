@@ -60,7 +60,9 @@ abstract class BaseCommand extends Command
         $filename = $input->hasOption($option) ? $input->getOption($option) : 'php://stdin';
 
         if (!file_exists($filename)) {
-            throw new \InvalidArgumentException('The file provided "'.$filename.'" was not found.');
+            return $filename;
+        } else {
+            return file_get_contents($filename);
         }
 
         if ($filename && ftell(STDIN) !== false) {

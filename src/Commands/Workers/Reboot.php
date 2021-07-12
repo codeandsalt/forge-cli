@@ -11,10 +11,7 @@ use Symfony\Component\Console\Question\ConfirmationQuestion;
 
 class Reboot extends BaseCommand implements NeedsForge
 {
-    /**
-     * {@inheritdoc}
-     */
-    public function configure()
+    public function configure(): void
     {
         $this->setName('worker:reboot')
             ->addArgument('server', InputArgument::REQUIRED, 'The id of the server the worker to reboot is on.')
@@ -23,10 +20,7 @@ class Reboot extends BaseCommand implements NeedsForge
             ->setDescription('Reboot one of your workers.');
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function execute(InputInterface $input, OutputInterface $output)
+    public function execute(InputInterface $input, OutputInterface $output): int
     {
         $worker = $input->getArgument('worker');
 
@@ -37,7 +31,7 @@ class Reboot extends BaseCommand implements NeedsForge
             $output->writeln('<info>Ok, aborting.</info>');
         } else {
             $this->forge->restartWorker(
-                $input->getArgument('server'), $input->getArgument('site'), $worker, false
+                $this->getServer($input), $this->getSite($input), $worker, false
             );
         }
 

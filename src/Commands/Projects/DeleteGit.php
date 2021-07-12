@@ -11,10 +11,7 @@ use Symfony\Component\Console\Question\ConfirmationQuestion;
 
 class DeleteGit extends BaseCommand implements NeedsForge
 {
-    /**
-     * {@inheritdoc}
-     */
-    public function configure()
+    public function configure(): void
     {
         $this->setName('git:delete')
             ->addArgument('server', InputArgument::REQUIRED, 'The id of the server the site is on.')
@@ -22,12 +19,9 @@ class DeleteGit extends BaseCommand implements NeedsForge
             ->setDescription('Delete a git project from a site.');
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function execute(InputInterface $input, OutputInterface $output)
+    public function execute(InputInterface $input, OutputInterface $output): int
     {
-        $site = $input->getArgument('site');
+        $site = $this->getSite($input);
 
         $helper = $this->getHelper('question');
         $question = new ConfirmationQuestion('Are you sure you want to delete the git project from the site with id "'.$site.'"?', false);
@@ -35,7 +29,7 @@ class DeleteGit extends BaseCommand implements NeedsForge
         if (!$helper->ask($input, $output, $question)) {
             $output->writeln('<info>Ok, aborting. Your git project is safe.</info>');
         } else {
-            $this->forge->destroySiteGitRepository($input->getArgument('server'), $site);
+            $this->forge->destroySiteGitRepository($this->getServer($input), $site);
         }
 
         return 0;

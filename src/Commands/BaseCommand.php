@@ -2,40 +2,29 @@
 
 namespace Sven\ForgeCLI\Commands;
 
+use InvalidArgumentException;
+use RuntimeException;
 use Sven\FileConfig\Drivers\Json;
 use Sven\FileConfig\File;
 use Sven\FileConfig\Store;
 use Sven\ForgeCLI\Contracts\NeedsForge;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Helper\Table;
+use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
-use Themsaid\Forge\Forge;
+use Laravel\Forge\Forge;
+use Laravel\Forge\Resources\Server;
+use Laravel\Forge\Resources\Site;
 
 abstract class BaseCommand extends Command
 {
-    /**
-     * @var \Themsaid\Forge\Forge
-     */
-    protected $forge;
+    protected Forge $forge;
+    protected Store $config;
+    protected array $optionMap = [];
+    protected Server $serverContext;
 
-    /**
-     * @var \Sven\FileConfig\Store
-     */
-    protected $config;
-
-    /**
-     * @var array
-     */
-    protected $optionMap = [];
-
-    /**
-     * @param \Themsaid\Forge\Forge|null $forge
-     *
-     * @throws \Symfony\Component\Console\Exception\LogicException
-     * @throws \LogicException
-     */
-    public function __construct(Forge $forge = null)
+    public function __construct(?Forge $forge = null)
     {
         parent::__construct();
 
@@ -46,11 +35,6 @@ abstract class BaseCommand extends Command
         }
     }
 
-    /**
-     * @param \Symfony\Component\Console\Output\OutputInterface $output
-     * @param array                                             $header
-     * @param array                                             $rows
-     */
     protected function table(OutputInterface $output, array $header, array $rows)
     {
         $table = new Table($output);
@@ -60,13 +44,7 @@ abstract class BaseCommand extends Command
         $table->render();
     }
 
-    /**
-     * @param array      $options
-     * @param array|null $optionMap
-     *
-     * @return array
-     */
-    protected function fillData(array $options, array $optionMap = null)
+    protected function fillData(array $options, array $optionMap = null): array
     {
         $data = [];
 
@@ -81,13 +59,7 @@ abstract class BaseCommand extends Command
         return $data;
     }
 
-    /**
-     * @param \Symfony\Component\Console\Input\InputInterface $input
-     * @param string                                          $option
-     *
-     * @return bool|string
-     */
-    protected function getFileContent(InputInterface $input, $option)
+    protected function getFileContent(InputInterface $input, string $option): bool|string
     {
         $filename = $input->hasOption($option) ? $input->getOption($option) : 'php://stdin';
 
@@ -101,32 +73,23 @@ abstract class BaseCommand extends Command
             return file_get_contents($filename);
         }
 
-        throw new \InvalidArgumentException('This command requires either the "--'.$option.'" option to be set, or an input from STDIN.');
+        throw new InvalidArgumentException('This command requires either the "--'.$option.'" option to be set, or an input from STDIN.');
     }
 
-    /**
-     * @param \Symfony\Component\Console\Input\InputInterface $input
-     * @param array                                           ...$keys
-     *
-     * @throws \RuntimeException
-     */
-    protected function requireOptions(InputInterface $input, ...$keys)
+    protected function requireOptions(InputInterface $input, string ...$keys): void
     {
         foreach ($keys as $key) {
             if ($input->hasOption($key)) {
                 continue;
             }
 
-            throw new \RuntimeException(
+            throw new RuntimeException(
                 sprintf('The option "%s" is required.', $key)
             );
         }
     }
 
-    /**
-     * @return \Sven\FileConfig\Store
-     */
-    protected function getFileConfig()
+    protected function getFileConfig(): Store
     {
         $homeDirectory = (
             strncasecmp(PHP_OS, 'WIN', 3) === 0
@@ -149,5 +112,87 @@ abstract class BaseCommand extends Command
 
         // Return the hidden configuration file.
         return new Store(new File($hiddenConfigFile), new Json());
+    }
+
+    protected function getServer(InputInterface $input)
+    {
+        $originalServer = $input->getArgument('server');
+
+        if (is_numeric($originalServer)) {
+            return $originalServer;
+        }
+
+        // If this is cached, just use it.
+        if ($this->serverContext && $this->serverContext->name === $originalServer) {
+            return $this->serverContext->id;
+        }
+
+        foreach ($this->getServerList() as $server) {
+            if ($server->name === $originalServer) {
+                $this->serverContext = $server;
+
+                return $server->id;
+            }
+        }
+    }
+
+    protected function getSite(InputInterface $input)
+    {
+        $originalSite = $input->getArgument('site');
+
+        if (is_numeric($originalSite)) {
+            return $originalSite;
+        }
+
+        if (! $this->serverContext) {
+            return null;
+        }
+
+        $sites = $this->getSiteList($this->serverContext->id);
+
+        foreach ($sites as $site) {
+            if ($site->name === $originalSite) {
+                return $site->id;
+            }
+        }
+
+    }
+
+    private function getServerList()
+    {
+        if ($cachedServers = $this->config->get('cache:servers')) {
+            return array_map(function ($data) {
+                return new Server($data, $this->forge);
+            }, $cachedServers);
+        }
+
+        $servers = $this->forge->servers();
+
+        $this->config->set('cache:servers', array_map(function ($server) {
+            return ['name' => $server->name, 'id' => $server->id];
+        }, $servers));
+
+        $this->config->persist();
+
+        return $servers;
+    }
+
+    private function getSiteList(int $serverId)
+    {
+        if ($cachedSites = $this->config->get('cache:server:' . $serverId)) {
+            return array_map(function ($data) {
+                return new Site($data, $this->forge);
+            }, $cachedSites);
+        }
+
+        $sites = $this->forge->sites($serverId);
+
+        $this->config->set('cache:server:' . $serverId, array_map(function ($site) {
+            return ['name' => $site->name, 'id' => $site->id];
+        }, $sites));
+
+        $this->config->persist();
+
+        return $sites;
     }
 }

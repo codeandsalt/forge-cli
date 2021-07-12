@@ -11,22 +11,16 @@ use Symfony\Component\Console\Question\ConfirmationQuestion;
 
 class Delete extends BaseCommand implements NeedsForge
 {
-    /**
-     * {@inheritdoc}
-     */
-    public function configure()
+    public function configure(): void
     {
         $this->setName('server:delete')
             ->addArgument('server', InputArgument::REQUIRED, 'The id of the server to delete.')
             ->setDescription('Delete a server.');
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function execute(InputInterface $input, OutputInterface $output)
+    public function execute(InputInterface $input, OutputInterface $output): int
     {
-        $server = $input->getArgument('server');
+        $server = $this->getServer($input);
 
         $helper = $this->getHelper('question');
         $question = new ConfirmationQuestion('Are you sure you want to delete the server with id "'.$server.'"?', false);

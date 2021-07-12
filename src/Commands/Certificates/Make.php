@@ -11,10 +11,7 @@ use Symfony\Component\Console\Output\OutputInterface;
 
 class Make extends BaseCommand implements NeedsForge
 {
-    /**
-     * {@inheritdoc}
-     */
-    public function configure()
+    public function configure(): void
     {
         $this->setName('certificate:make')
             ->addArgument('server', InputArgument::REQUIRED, 'The id of the server the site is on.')
@@ -28,16 +25,13 @@ class Make extends BaseCommand implements NeedsForge
             ->setDescription('Create a new SSL certificate.');
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function execute(InputInterface $input, OutputInterface $output)
+    public function execute(InputInterface $input, OutputInterface $output): int
     {
         $this->requireOptions($input, 'domain', 'country', 'state', 'city', 'organization', 'department');
 
         $certificate = $this->forge->createCertificate(
-            $input->getArgument('server'),
-            $input->getArgument('site'),
+            $this->getServer($input),
+            $this->getSite($input),
             $this->fillData($input->getOptions()),
             false
         );

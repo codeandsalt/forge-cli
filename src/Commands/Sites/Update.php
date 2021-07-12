@@ -14,14 +14,11 @@ class Update extends BaseCommand implements NeedsForge
     /**
      * @var array
      */
-    protected $optionMap = [
+    protected array $optionMap = [
         'directory' => 'directory',
     ];
 
-    /**
-     * {@inheritdoc}
-     */
-    public function configure()
+    public function configure(): void
     {
         $this->setName('site:update')
             ->addArgument('server', InputArgument::REQUIRED, 'The id of the server the site is on.')
@@ -30,13 +27,10 @@ class Update extends BaseCommand implements NeedsForge
             ->setDescription('Update a site on a specified server.');
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function execute(InputInterface $input, OutputInterface $output)
+    public function execute(InputInterface $input, OutputInterface $output): int
     {
         $this->forge->updateSite(
-            $input->getArgument('server'), $input->getArgument('site'), $this->fillData($input->getOptions())
+            $this->getServer($input), $this->getSite($input), $this->fillData($input->getOptions())
         );
 
         return 0;

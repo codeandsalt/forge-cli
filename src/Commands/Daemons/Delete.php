@@ -11,10 +11,7 @@ use Symfony\Component\Console\Question\ConfirmationQuestion;
 
 class Delete extends BaseCommand implements NeedsForge
 {
-    /**
-     * {@inheritdoc}
-     */
-    public function configure()
+    public function configure(): void
     {
         $this->setName('delete:daemon')
             ->addArgument('server', InputArgument::REQUIRED, 'The id of the server the daemon is on.')
@@ -22,10 +19,7 @@ class Delete extends BaseCommand implements NeedsForge
             ->setDescription('Delete the given daemon from one of your servers.');
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function execute(InputInterface $input, OutputInterface $output)
+    public function execute(InputInterface $input, OutputInterface $output): int
     {
         $daemon = $input->getArgument('daemon');
 
@@ -35,7 +29,7 @@ class Delete extends BaseCommand implements NeedsForge
         if (!$helper->ask($input, $output, $question)) {
             $output->writeln('<info>Ok, aborting. Your daemon is safe.</info>');
         } else {
-            $this->forge->deleteDaemon($input->getArgument('server'), $daemon);
+            $this->forge->deleteDaemon($this->getServer($input), $daemon);
         }
 
         return 0;

@@ -11,10 +11,7 @@ use Symfony\Component\Console\Question\ConfirmationQuestion;
 
 class Uninstall extends BaseCommand implements NeedsForge
 {
-    /**
-     * {@inheritdoc}
-     */
-    public function configure()
+    public function configure(): void
     {
         $this->setName('service:uninstall')
             ->addArgument('server', InputArgument::REQUIRED, 'The id of the server to uninstall the service from.')
@@ -22,12 +19,9 @@ class Uninstall extends BaseCommand implements NeedsForge
             ->setDescription('Uninstall a service from a server.');
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function execute(InputInterface $input, OutputInterface $output)
+    public function execute(InputInterface $input, OutputInterface $output): int
     {
-        $server = $input->getArgument('server');
+        $server = $this->getServer($input);
         $service = strtolower($input->getArgument('service'));
 
         $helper = $this->getHelper('question');

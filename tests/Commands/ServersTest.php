@@ -2,6 +2,8 @@
 
 namespace Sven\ForgeCLI\Tests\Commands;
 
+use Laravel\Forge\Resources\Server;
+use Laravel\Forge\Resources\Site;
 use Sven\ForgeCLI\Commands\Servers\Delete;
 use Sven\ForgeCLI\Commands\Servers\ListAll;
 use Sven\ForgeCLI\Commands\Servers\Make;
@@ -10,8 +12,6 @@ use Sven\ForgeCLI\Commands\Servers\Show;
 use Sven\ForgeCLI\Commands\Servers\SshConfig;
 use Sven\ForgeCLI\Commands\Servers\Update;
 use Sven\ForgeCLI\Tests\TestCase;
-use Themsaid\Forge\Resources\Server;
-use Themsaid\Forge\Resources\Site;
 
 class ServersTest extends TestCase
 {

@@ -2,6 +2,7 @@
 
 namespace Sven\ForgeCLI\Tests\Commands;
 
+use Laravel\Forge\Resources\Site;
 use Sven\ForgeCLI\Commands\Sites\Delete;
 use Sven\ForgeCLI\Commands\Sites\Deploy;
 use Sven\ForgeCLI\Commands\Sites\ListAll;
@@ -9,7 +10,6 @@ use Sven\ForgeCLI\Commands\Sites\Make;
 use Sven\ForgeCLI\Commands\Sites\Show;
 use Sven\ForgeCLI\Commands\Sites\Update;
 use Sven\ForgeCLI\Tests\TestCase;
-use Themsaid\Forge\Resources\Site;
 
 class SitesTest extends TestCase
 {
@@ -84,6 +84,7 @@ class SitesTest extends TestCase
                 'domain' => 'example.com',
                 'project_type' => 'symfony_dev',
                 'directory' => '/public',
+                'isolated' => false,
                 'aliases' => [],
             ], false);
 
@@ -96,6 +97,27 @@ class SitesTest extends TestCase
     }
 
     /** @test */
+    public function it_creates_a_site_with_website_isolation(): void
+    {
+        $this->forge->shouldReceive()
+            ->createSite('12345', [
+                'domain' => 'example.com',
+                'project_type' => 'symfony_dev',
+                'directory' => '/public',
+                'isolated' => true,
+                'aliases' => [],
+            ], false);
+
+        $this->command(Make::class)->execute([
+            'server' => '12345',
+            '--domain' => 'example.com',
+            '--type' => 'symfony_dev',
+            '--directory' => '/public',
+            '--isolated' => true,
+        ]);
+    }
+
+    /** @test */
     public function it_creates_a_site_with_aliases()
     {
         $this->forge->shouldReceive()
@@ -103,6 +125,7 @@ class SitesTest extends TestCase
                 'domain' => 'example.com',
                 'project_type' => 'symfony_dev',
                 'directory' => '/public',
+                'isolated' => false,
                 'aliases' => [
                     'foo.local',
                     'bar.local',
@@ -126,6 +149,7 @@ class SitesTest extends TestCase
                 'domain' => 'example.com',
                 'project_type' => 'php',
                 'directory' => '/public_html',
+                'isolated' => false,
                 'aliases' => [],
             ], false);
 
@@ -144,6 +168,7 @@ class SitesTest extends TestCase
                 'domain' => 'example.com',
                 'project_type' => 'Symfony',
                 'directory' => '/public',
+                'isolated' => false,
                 'aliases' => [],
             ], false);
 

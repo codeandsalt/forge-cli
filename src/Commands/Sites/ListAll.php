@@ -22,7 +22,7 @@ class ListAll extends BaseCommand implements NeedsForge
     {
         $this->table($output, ['Id', 'Name', 'Type', 'Repository', 'Branch'], array_map(function (Site $site) {
             return [$site->id, $site->name, $site->projectType, $site->repository ?: '-', $site->repositoryBranch ?: '-'];
-        }, $this->forge->sites($input->getArgument('server'))));
+        }, $this->forge->sites($this->getServer($input))));
 
         return 0;
     }

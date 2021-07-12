@@ -47,7 +47,7 @@ class Make extends BaseCommand implements NeedsForge
         }
 
         $this->forge->createJob(
-            $input->getArgument('server'),
+            $this->getServer($input),
             $this->fillData($input->getOptions()),
             false
         );

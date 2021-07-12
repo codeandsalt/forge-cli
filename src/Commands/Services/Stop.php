@@ -22,7 +22,7 @@ class Stop extends BaseCommand implements NeedsForge
     public function execute(InputInterface $input, OutputInterface $output): int
     {
         $service = strtolower($input->getArgument('service'));
-        $server = $input->getArgument('server');
+        $server = $this->getServer($input);
 
         $helper = $this->getHelper('question');
         $question = new ConfirmationQuestion('Are you sure you want to stop '.$service.' on the server with id '.$server.'?', false);

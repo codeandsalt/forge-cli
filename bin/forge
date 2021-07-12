@@ -30,6 +30,7 @@ $app->addCommands([
     new Sites\Show,
     new Sites\Update,
     new Sites\Delete,
+    new Sites\CacheClear,
     new Sites\Deploy,
     new Services\Reboot,
     new Services\Stop,

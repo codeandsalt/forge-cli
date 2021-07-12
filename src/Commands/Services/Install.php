@@ -40,7 +40,7 @@ class Install extends BaseCommand implements NeedsForge
     public function execute(InputInterface $input, OutputInterface $output): int
     {
         $service = strtolower($input->getArgument('service'));
-        $server = $input->getArgument('server');
+        $server = $this->getServer($input);
         $options = $input->getOptions();
 
         switch ($service) {

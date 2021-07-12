@@ -30,8 +30,8 @@ class Make extends BaseCommand implements NeedsForge
         $this->requireOptions($input, 'domain', 'country', 'state', 'city', 'organization', 'department');
 
         $certificate = $this->forge->createCertificate(
-            $input->getArgument('server'),
-            $input->getArgument('site'),
+            $this->getServer($input),
+            $this->getSite($input),
             $this->fillData($input->getOptions()),
             false
         );

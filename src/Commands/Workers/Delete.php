@@ -31,7 +31,7 @@ class Delete extends BaseCommand implements NeedsForge
             $output->writeln('<info>Ok, aborting. Your worker is safe.</info>');
         } else {
             $this->forge->deleteWorker(
-                $input->getArgument('server'), $input->getArgument('site'), $worker
+                $this->getServer($input), $this->getSite($input), $worker
             );
         }
 

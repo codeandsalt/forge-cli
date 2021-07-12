@@ -21,7 +21,7 @@ class Uninstall extends BaseCommand implements NeedsForge
 
     public function execute(InputInterface $input, OutputInterface $output): int
     {
-        $server = $input->getArgument('server');
+        $server = $this->getServer($input);
         $service = strtolower($input->getArgument('service'));
 
         $helper = $this->getHelper('question');

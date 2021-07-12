@@ -34,8 +34,8 @@ class InstallGit extends BaseCommand implements NeedsForge
     public function execute(InputInterface $input, OutputInterface $output): int
     {
         $this->forge->installGitRepositoryOnSite(
-            $input->getArgument('server'),
-            $input->getArgument('site'),
+            $this->getServer($input),
+            $this->getSite($input),
             $this->fillData($input->getOptions())
         );
 

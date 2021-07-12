@@ -21,7 +21,7 @@ class ResetState extends BaseCommand implements NeedsForge
     public function execute(InputInterface $input, OutputInterface $output): int
     {
         $this->forge->resetDeploymentState(
-            $input->getArgument('server'), $input->getArgument('site')
+            $this->getServer($input), $this->getSite($input)
         );
 
         return 0;

@@ -20,7 +20,7 @@ class Show extends BaseCommand implements NeedsForge
 
     public function execute(InputInterface $input, OutputInterface $output): int
     {
-        $rule = $this->forge->firewallRule($input->getArgument('server'), $input->getArgument('rule'));
+        $rule = $this->forge->firewallRule($this->getServer($input), $input->getArgument('rule'));
 
         $output->writeln([
             '<info>Name:</info>        '.$rule->name,

@@ -22,7 +22,7 @@ class Install extends BaseCommand implements NeedsForge
     public function execute(InputInterface $input, OutputInterface $output): int
     {
         $this->forge->installCertificate(
-            $input->getArgument('server'), $input->getArgument('site'), $input->getArgument('certificate')
+            $this->getServer($input), $this->getSite($input), $input->getArgument('certificate')
         );
 
         return 0;

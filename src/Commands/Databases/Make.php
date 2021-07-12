@@ -33,7 +33,7 @@ class Make extends BaseCommand implements NeedsForge
     public function execute(InputInterface $input, OutputInterface $output): int
     {
         $this->forge->createMysqlDatabase(
-            $input->getArgument('server'), $this->fillData($input->getOptions()), false
+            $this->getServer($input), $this->fillData($input->getOptions()), false
         );
 
         return 0;

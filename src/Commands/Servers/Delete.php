@@ -20,7 +20,7 @@ class Delete extends BaseCommand implements NeedsForge
 
     public function execute(InputInterface $input, OutputInterface $output): int
     {
-        $server = $input->getArgument('server');
+        $server = $this->getServer($input);
 
         $helper = $this->getHelper('question');
         $question = new ConfirmationQuestion('Are you sure you want to delete the server with id "'.$server.'"?', false);

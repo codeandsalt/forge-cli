@@ -37,7 +37,7 @@ class Make extends BaseCommand implements NeedsForge
     public function execute(InputInterface $input, OutputInterface $output): int
     {
         $this->forge->createSite(
-            $input->getArgument('server'),
+            $this->getServer($input),
             $this->fillData($input->getOptions()),
             false
         );

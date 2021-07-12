@@ -20,7 +20,7 @@ class ListAll extends BaseCommand implements NeedsForge
 
     public function execute(InputInterface $input, OutputInterface $output): int
     {
-        $rules = $this->forge->firewallRules($input->getArgument('server'));
+        $rules = $this->forge->firewallRules($this->getServer($input));
 
         $rows = array_map(function (FirewallRule $rule) {
             return [$rule->name, $rule->id, $rule->port, $rule->ipAddress];

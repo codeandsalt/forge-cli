@@ -29,7 +29,7 @@ class Reboot extends BaseCommand implements NeedsForge
         if (!$helper->ask($input, $output, $question)) {
             $output->writeln('<info>Ok, aborting. Your daemon is safe.</info>');
         } else {
-            $this->forge->restartDaemon($input->getArgument('server'), $daemon);
+            $this->forge->restartDaemon($this->getServer($input), $daemon);
         }
 
         return 0;

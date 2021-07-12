@@ -21,7 +21,7 @@ class Show extends BaseCommand implements NeedsForge
     public function execute(InputInterface $input, OutputInterface $output): int
     {
         $key = $this->forge->SSHKey(
-            $input->getArgument('server'), $input->getArgument('key')
+            $this->getServer($input), $input->getArgument('key')
         );
 
         $output->writeln([

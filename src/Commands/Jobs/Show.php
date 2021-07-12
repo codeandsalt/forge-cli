@@ -21,7 +21,7 @@ class Show extends BaseCommand implements NeedsForge
     public function execute(InputInterface $input, OutputInterface $output): int
     {
         $job = $this->forge->job(
-            $input->getArgument('server'), $input->getArgument('job')
+            $this->getServer($input), $input->getArgument('job')
         );
 
         $output->writeln([

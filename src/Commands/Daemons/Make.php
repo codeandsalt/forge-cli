@@ -28,7 +28,7 @@ class Make extends BaseCommand implements NeedsForge
     public function execute(InputInterface $input, OutputInterface $output): int
     {
         $this->forge->createDaemon(
-            $input->getArgument('server'), $this->fillData($input->getOptions())
+            $this->getServer($input), $this->fillData($input->getOptions())
         );
 
         return 0;

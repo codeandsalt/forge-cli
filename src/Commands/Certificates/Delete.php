@@ -30,7 +30,7 @@ class Delete extends BaseCommand implements NeedsForge
         if (!$helper->ask($input, $output, $question)) {
             $output->writeln('<info>Ok, aborting. Your SSL certificate is safe.</info>');
         } else {
-            $this->forge->deleteCertificate($input->getArgument('server'), $input->getArgument('site'), $certificate);
+            $this->forge->deleteCertificate($this->getServer($input), $this->getSite($input), $certificate);
         }
 
         return 0;

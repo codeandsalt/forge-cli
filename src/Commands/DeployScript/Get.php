@@ -21,7 +21,7 @@ class Get extends BaseCommand implements NeedsForge
     public function execute(InputInterface $input, OutputInterface $output): int
     {
         $script = $this->forge->siteDeploymentScript(
-            $input->getArgument('server'), $input->getArgument('site')
+            $this->getServer($input), $this->getSite($input)
         );
 
         $output->writeln($script);

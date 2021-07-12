@@ -29,7 +29,7 @@ class Delete extends BaseCommand implements NeedsForge
         if (!$helper->ask($input, $output, $question)) {
             $output->writeln('<info>Ok, aborting. Your database is safe.</info>');
         } else {
-            $this->forge->deleteMysqlDatabase($input->getArgument('server'), $database);
+            $this->forge->deleteMysqlDatabase($this->getServer($input), $database);
         }
 
         return 0;

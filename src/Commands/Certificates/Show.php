@@ -22,7 +22,7 @@ class Show extends BaseCommand implements NeedsForge
     public function execute(InputInterface $input, OutputInterface $output): int
     {
         $certificate = $this->forge->certificate(
-            $input->getArgument('server'), $input->getArgument('site'), $input->getArgument('certificate')
+            $this->getServer($input), $this->getSite($input), $input->getArgument('certificate')
         );
 
         $output->writeln([

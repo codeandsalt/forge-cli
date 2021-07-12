@@ -21,7 +21,7 @@ class Show extends BaseCommand implements NeedsForge
     public function execute(InputInterface $input, OutputInterface $output): int
     {
         $database = $this->forge->mysqlDatabase(
-            $input->getArgument('server'), $input->getArgument('database')
+            $this->getServer($input), $input->getArgument('database')
         );
 
         $output->writeln([

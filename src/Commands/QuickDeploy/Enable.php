@@ -21,7 +21,7 @@ class Enable extends BaseCommand implements NeedsForge
     public function execute(InputInterface $input, OutputInterface $output): int
     {
         $this->forge->enableQuickDeploy(
-            $input->getArgument('server'), $input->getArgument('site')
+            $this->getServer($input), $this->getSite($input)
         );
 
         return 0;

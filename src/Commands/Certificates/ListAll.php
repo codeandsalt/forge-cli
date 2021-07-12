@@ -21,7 +21,7 @@ class ListAll extends BaseCommand implements NeedsForge
 
     public function execute(InputInterface $input, OutputInterface $output): int
     {
-        $certificates = $this->forge->certificates($input->getArgument('server'), $input->getArgument('site'));
+        $certificates = $this->forge->certificates($this->getServer($input), $this->getSite($input));
 
         $this->table($output, ['Id', 'Status', 'Active', 'Created'], array_map(function (Certificate $certificate) {
             return [$certificate->id, $certificate->status, $certificate->active ? 'Yes' : 'No', $certificate->createdAt];

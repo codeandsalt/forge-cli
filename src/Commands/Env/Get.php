@@ -21,7 +21,7 @@ class Get extends BaseCommand implements NeedsForge
     public function execute(InputInterface $input, OutputInterface $output): int
     {
         $env = $this->forge->siteEnvironmentFile(
-            $input->getArgument('server'), $input->getArgument('site')
+            $this->getServer($input), $this->getSite($input)
         );
 
         $output->writeln($env);

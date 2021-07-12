@@ -22,7 +22,7 @@ class ListAll extends BaseCommand implements NeedsForge
     {
         $rows = array_map(function (Daemon $daemon) {
             return [$daemon->id, $daemon->status, $daemon->command, $daemon->createdAt];
-        }, $this->forge->daemons($input->getArgument('server')));
+        }, $this->forge->daemons($this->getServer($input)));
 
         $this->table($output, ['Id', 'Status', 'Command', 'Created'], $rows);
 

@@ -22,7 +22,7 @@ class Activate extends BaseCommand implements NeedsForge
     public function execute(InputInterface $input, OutputInterface $output): int
     {
         $this->forge->activateCertificate(
-            $input->getArgument('server'), $input->getArgument('site'), $input->getArgument('certificate'), false
+            $this->getServer($input), $this->getSite($input), $input->getArgument('certificate'), false
         );
 
         return 0;

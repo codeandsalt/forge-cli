@@ -21,7 +21,7 @@ class Show extends BaseCommand implements NeedsForge
     public function execute(InputInterface $input, OutputInterface $output): int
     {
         $site = $this->forge->site(
-            $input->getArgument('server'), $input->getArgument('site')
+            $this->getServer($input), $this->getSite($input)
         );
 
         $output->writeln([

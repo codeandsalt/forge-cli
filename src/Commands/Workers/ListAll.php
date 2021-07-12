@@ -23,7 +23,7 @@ class ListAll extends BaseCommand implements NeedsForge
     {
         $rows = array_map(function (Worker $worker) {
             return [$worker->id, $worker->connection, $worker->status, $worker->createdAt];
-        }, $this->forge->workers($input->getArgument('server'), $input->getArgument('site')));
+        }, $this->forge->workers($this->getServer($input), $this->getSite($input)));
 
         $this->table($output, ['Id', 'Connection', 'Status', 'Created'], $rows);
 

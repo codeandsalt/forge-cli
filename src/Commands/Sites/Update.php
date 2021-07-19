@@ -16,7 +16,7 @@ class Update extends BaseCommand implements NeedsForge
      */
     protected array $optionMap = [
         'directory' => 'directory',
-        'aliases' => 'aliases',
+        'alias' => 'aliases',
     ];
 
     public function configure(): void
@@ -25,7 +25,7 @@ class Update extends BaseCommand implements NeedsForge
             ->addArgument('server', InputArgument::REQUIRED, 'The id of the server the site is on.')
             ->addArgument('site', InputArgument::REQUIRED, 'The id of the server to update.')
             ->addOption('directory', null, InputOption::VALUE_REQUIRED, 'The new base directory of the website.')
-            ->addOption('aliases', null, InputOption::VALUE_REQUIRED, 'A comma-separated list of aliases for the site.')
+            ->addOption('alias', null, InputOption::VALUE_IS_ARRAY | InputOption::VALUE_OPTIONAL, 'The aliases assigned to the site.')
             ->setDescription('Update a site on a specified server.');
     }
 

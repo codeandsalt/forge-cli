@@ -27,6 +27,7 @@ class Make extends BaseCommand implements NeedsForge
         'network' => 'network',
         'name' => 'name',
         'size' => 'size',
+        'type' => 'type',
     ];
 
     public function configure(): void
@@ -45,6 +46,7 @@ class Make extends BaseCommand implements NeedsForge
             ->addOption('network', null, InputOption::VALUE_IS_ARRAY | InputOption::VALUE_REQUIRED, 'Other servers\' ids this one can network with.')
             ->addOption('name', null, InputOption::VALUE_REQUIRED, 'The name of the server.')
             ->addOption('size', null, InputOption::VALUE_REQUIRED, 'The size of the server.')
+            ->addOption('type', null, InputOption::VALUE_REQUIRED, 'The type of the server. Can be "app", "web", "loadbalancer", "cache", "database", "worker", "meilisearch". Defaults to app.')
             ->setDescription('Create a new server.');
     }
 

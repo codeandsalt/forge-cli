@@ -14,7 +14,7 @@ class SetVar extends BaseCommand implements NeedsForge
     /**
      * @var array
      */
-    protected $optionMap = [
+    protected array $optionMap = [
         'file' => 'file',
     ];
 

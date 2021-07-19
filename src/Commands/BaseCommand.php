@@ -22,13 +22,14 @@ abstract class BaseCommand extends Command
     protected Forge $forge;
     protected Store $config;
     protected array $optionMap = [];
-    protected Server $serverContext;
+    protected ?Server $serverContext = null;
 
     public function __construct(?Forge $forge = null)
     {
         parent::__construct();
 
         $this->config = $this->getFileConfig();
+        $this->serverContext = null;
 
         if ($this instanceof NeedsForge) {
             $this->forge = $forge ?: new Forge($this->config->get('key'));

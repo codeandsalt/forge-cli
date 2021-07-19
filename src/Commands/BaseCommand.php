@@ -59,7 +59,7 @@ abstract class BaseCommand extends Command
         return $data;
     }
 
-    protected function getFileContent(InputInterface $input, string $option): bool|string
+    protected function getFileContent(InputInterface $input, string $option): string
     {
         $filename = $input->hasOption($option) ? $input->getOption($option) : 'php://stdin';
 

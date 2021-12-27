@@ -20,6 +20,7 @@ class Update extends BaseCommand implements NeedsForge
         'ip' => 'ip_address',
         'private-ip' => 'private_ip_address',
         'max-upload-size' => 'max_upload_size',
+        'max-execution-time' => 'max_execution_time',
         'network' => 'network',
     ];
 
@@ -32,6 +33,7 @@ class Update extends BaseCommand implements NeedsForge
             ->addOption('ip', null, InputOption::VALUE_REQUIRED, 'The server\'s IP address.')
             ->addOption('private-ip', null, InputOption::VALUE_REQUIRED, 'The server\'s private IP address.')
             ->addOption('max-upload-size', 'M', InputOption::VALUE_REQUIRED, 'The configured max upload size on the server.')
+            ->addOption('max-execution-time', 'T', InputOption::VALUE_REQUIRED, 'The configured max execution time on the server.')
             ->addOption('network', null, InputOption::VALUE_IS_ARRAY | InputOption::VALUE_REQUIRED, 'Other servers\' ids this one can network with.')
             ->setDescription('Update the metadata on one of your servers.');
     }

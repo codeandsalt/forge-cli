@@ -25,5 +25,7 @@ class Get extends BaseCommand implements NeedsForge
         );
 
         $output->writeln($config);
+
+        return 0;
     }
 }

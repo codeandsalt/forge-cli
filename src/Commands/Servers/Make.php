@@ -18,6 +18,7 @@ class Make extends BaseCommand implements NeedsForge
         'credentials' => 'credential_id',
         'region' => 'region',
         'ip' => 'ip_address',
+        'circle' => 'circle',
         'private-ip' => 'private_ip_address',
         'php' => 'php_version',
         'database' => 'database',
@@ -36,6 +37,7 @@ class Make extends BaseCommand implements NeedsForge
             ->addOption('provider', null, InputOption::VALUE_REQUIRED, 'The provider to provision the server on. Can be either "ocean2", "linode", "aws", or "custom".', 'ocean2')
             ->addOption('credentials', 'C', InputOption::VALUE_REQUIRED, 'Credentials to use. Not required when using the "custom" provider.')
             ->addOption('region', null, InputOption::VALUE_REQUIRED, 'The region to provision the server in. Not required when using the "custom" provider.')
+            ->addOption('circle', null, InputOption::VALUE_REQUIRED, 'The circle to create the server in.')
             ->addOption('ip', null, InputOption::VALUE_REQUIRED, 'IP address of the server. Required when using the "custom" provider.')
             ->addOption('private-ip', null, InputOption::VALUE_REQUIRED, 'Private IP address of the server. Required when using the "custom" provider.')
             ->addOption('php', null, InputOption::VALUE_REQUIRED, 'PHP version to install when provisioning the server. Supported versions are "php56", "php70", and "php71".')

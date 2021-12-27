@@ -25,6 +25,8 @@ $app->addCommands([
     new Servers\Update,
     new Servers\Delete,
     new Servers\Reboot,
+    new Servers\EnableOpcache,
+    new Servers\DisableOpcache,
     new Sites\Make,
     new Sites\ListAll,
     new Sites\Show,
